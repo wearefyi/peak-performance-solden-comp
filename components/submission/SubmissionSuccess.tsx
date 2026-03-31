@@ -9,7 +9,7 @@ export default function SubmissionSuccess() {
           alt='Peak Performance'
           width={300}
           height={31}
-          className='w-[300px] h-[31px]'
+          className='w-[300px] h-auto'
           priority
         />
       </div>
