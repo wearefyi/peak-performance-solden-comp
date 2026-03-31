@@ -204,6 +204,7 @@ export default function SubmitPage() {
 
                 {/* Country */}
                 <div className='mb-0 -mx-8 md:-mx-16'>
+                  <label htmlFor='country' className='sr-only'>Country of residence</label>
                   <select
                     id='country'
                     name='country'
@@ -245,6 +246,7 @@ export default function SubmitPage() {
 
                 {/* Where did you hear about us */}
                 <div className='mb-0 -mx-8 md:-mx-16'>
+                  <label htmlFor='heardAboutUs' className='sr-only'>Where did you hear about us?</label>
                   <select
                     id='heardAboutUs'
                     name='heardAboutUs'
@@ -268,12 +270,13 @@ export default function SubmitPage() {
 
                 {/* Story answer */}
                 <div className='mb-0 -mx-8 md:-mx-16'>
-                  <p
-                    className='px-8 md:px-16 pt-6 pb-3 text-black text-[16px] leading-snug tracking-[-0.05em]'
+                  <label
+                    htmlFor='storyAnswer'
+                    className='block px-8 md:px-16 pt-6 pb-3 text-black text-[16px] leading-snug tracking-[-0.05em]'
                     style={{ fontFamily: 'Mercury Display, serif', fontWeight: 400 }}
                   >
                     Tell us the story of an adventure or mountain experience where you pushed to find your own path. How did you handle risk and planning, and what decisions did you make when things got tough? What made the experience stand out, and what memories and lessons did you take away from it?
-                  </p>
+                  </label>
                   <textarea
                     id='storyAnswer'
                     name='storyAnswer'
@@ -326,7 +329,7 @@ export default function SubmitPage() {
                   </div>
 
                   <div>
-                    <div className='flex items-center gap-3'>
+                    <div className='flex items-start gap-3'>
                       <input
                         type='checkbox'
                         id='agreedToTerms'
@@ -335,12 +338,14 @@ export default function SubmitPage() {
                         onChange={handleChange}
                         className='w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-black accent-black cursor-pointer shrink-0 mt-0.5'
                       />
-                      <label htmlFor='agreedToTerms' className='text-xs text-black cursor-pointer leading-tight' style={{ fontFamily: 'var(--font-text)' }}>
-                        I agree to the Peak Performance Sölden Mountain House 2026 Promotion{' '}
+                      <div className='text-xs text-black leading-tight' style={{ fontFamily: 'var(--font-text)' }}>
+                        <label htmlFor='agreedToTerms' className='cursor-pointer'>
+                          I agree to the Peak Performance Sölden Mountain House 2026 Promotion{' '}
+                        </label>
                         <button type='button' onClick={() => setIsTermsModalOpen(true)} className='text-black underline hover:no-underline'>
                           Terms and Conditions
                         </button>
-                      </label>
+                      </div>
                     </div>
                     {errors.agreedToTerms && (
                       <p className='mt-1 text-sm text-red-600 ml-8' style={{ fontFamily: 'var(--font-text)' }}>
@@ -350,7 +355,7 @@ export default function SubmitPage() {
                   </div>
 
                   <div>
-                    <div className='flex items-center gap-3'>
+                    <div className='flex items-start gap-3'>
                       <input
                         type='checkbox'
                         id='privacyAccepted'
@@ -359,16 +364,18 @@ export default function SubmitPage() {
                         onChange={handleChange}
                         className='w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-black accent-black cursor-pointer shrink-0 mt-0.5'
                       />
-                      <label htmlFor='privacyAccepted' className='text-xs text-black cursor-pointer leading-tight' style={{ fontFamily: 'var(--font-text)' }}>
-                        I agree the processing of my personal information according to the{' '}
+                      <div className='text-xs text-black leading-tight' style={{ fontFamily: 'var(--font-text)' }}>
+                        <label htmlFor='privacyAccepted' className='cursor-pointer'>
+                          I agree the processing of my personal information according to the{' '}
+                        </label>
                         <a href='https://www.peakperformance.com/se/en/privacy-policy' target='_blank' rel='noopener noreferrer' className='text-black underline hover:no-underline'>
                           Privacy Policy
-                        </a>{' '}
-                        and{' '}
+                        </a>
+                        {' '}and{' '}
                         <button type='button' onClick={() => setIsPrivacyNoticeModalOpen(true)} className='text-black underline hover:no-underline'>
                           Privacy Notice
                         </button>
-                      </label>
+                      </div>
                     </div>
                     {errors.privacyAccepted && (
                       <p className='mt-1 text-sm text-red-600 ml-8' style={{ fontFamily: 'var(--font-text)' }}>

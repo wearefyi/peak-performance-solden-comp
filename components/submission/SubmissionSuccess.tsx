@@ -62,6 +62,7 @@ export default function SubmissionSuccess() {
               href='https://instagram.com/peakperformance'
               target='_blank'
               rel='noopener noreferrer'
+              aria-label='Peak Performance on Instagram'
               className='text-black hover:opacity-70 transition-opacity'
             >
               <svg className='w-10 h-10' fill='currentColor' viewBox='0 0 24 24'>

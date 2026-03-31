@@ -24,7 +24,14 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { fullName, email, dateOfBirth, country, socialHandle, heardAboutUs, storyAnswer } = body;
+
+    const fullName = typeof body.fullName === 'string' ? body.fullName.trim() : '';
+    const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+    const dateOfBirth = typeof body.dateOfBirth === 'string' ? body.dateOfBirth.trim() : '';
+    const country = typeof body.country === 'string' ? body.country.trim() : '';
+    const socialHandle = typeof body.socialHandle === 'string' ? body.socialHandle.trim() : '';
+    const heardAboutUs = typeof body.heardAboutUs === 'string' ? body.heardAboutUs.trim() : '';
+    const storyAnswer = typeof body.storyAnswer === 'string' ? body.storyAnswer.trim() : '';
 
     if (!fullName || !email || !dateOfBirth || !country || !heardAboutUs || !storyAnswer) {
       return NextResponse.json(
@@ -59,7 +66,7 @@ export async function POST(request: NextRequest) {
     const submissionsCollection = db.collection<Submission>('submissions');
 
     const alreadySubmitted = await submissionsCollection.findOne({
-      email: email.toLowerCase(),
+      email,
     });
 
     if (alreadySubmitted) {
@@ -69,16 +76,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const timestamp = Date.now();
     const newSubmission: Submission = {
-      id: `sub_${timestamp}_${Math.random().toString(36).substring(2, 11)}`,
-      fullName: fullName.trim(),
-      email: email.trim().toLowerCase(),
-      dateOfBirth: dateOfBirth.trim(),
-      country: country.trim(),
-      ...(socialHandle?.trim() ? { socialHandle: socialHandle.trim() } : {}),
-      heardAboutUs: heardAboutUs.trim(),
-      storyAnswer: storyAnswer.trim(),
+      id: crypto.randomUUID(),
+      fullName,
+      email,
+      dateOfBirth,
+      country,
+      ...(socialHandle ? { socialHandle } : {}),
+      heardAboutUs,
+      storyAnswer,
       timestamp: new Date().toISOString(),
     };
 
