@@ -285,7 +285,7 @@ export default function SubmitPage() {
                     rows={6}
                     maxLength={STORY_MAX_CHARS}
                     placeholder='YOUR ANSWER'
-                    className='w-full py-4 px-8 md:px-16 border-0 border-b border-gray-300 focus:outline-none focus:border-b-2 focus:border-black transition-all uppercase placeholder:uppercase placeholder:text-[#868686] bg-transparent text-[16px] leading-[1.5] tracking-[-0.02em] text-black resize-none'
+                    className='w-full py-4 px-8 md:px-16 border-0 border-b border-gray-300 focus:outline-none focus:border-b-2 focus:border-black transition-all placeholder:uppercase placeholder:text-[#868686] bg-transparent text-[16px] leading-[1.5] tracking-[-0.02em] text-black resize-none normal-case'
                     style={{ fontFamily: 'Helvetica Now Var, sans-serif', fontWeight: 400 }}
                   />
                   <div className='flex justify-between items-center px-8 md:px-16 pt-1 pb-2'>
