@@ -100,6 +100,9 @@ export default function SubmitPage() {
 
     setIsSubmitting(true);
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+
     try {
       const response = await fetch('/api/submissions', {
         method: 'POST',
@@ -113,9 +116,11 @@ export default function SubmitPage() {
           heardAboutUs: formData.heardAboutUs,
           storyAnswer: formData.storyAnswer,
         }),
+        signal: controller.signal,
       });
 
-      const data = await response.json();
+      clearTimeout(timeout);
+      const data = JSON.parse(await response.text());
 
       if (!response.ok || !data.success) {
         setIsSubmitting(false);
@@ -126,10 +131,11 @@ export default function SubmitPage() {
       setIsSubmitting(false);
       setIsSubmitted(true);
     } catch (error) {
+      clearTimeout(timeout);
       setIsSubmitting(false);
       setSubmitError(
-        error instanceof Error
-          ? error.message
+        error instanceof Error && error.name === 'AbortError'
+          ? 'Request timed out. Please try again.'
           : 'Failed to submit. Please try again.'
       );
     }

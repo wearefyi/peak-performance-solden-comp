@@ -1,5 +1,5 @@
 import { getDatabase } from '@/lib/mongodb';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const key = request.nextUrl.searchParams.get('key');
@@ -42,14 +42,17 @@ interface Submission {
   timestamp: string;
 }
 
+const postJson = (data: unknown, status = 200) =>
+  new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  });
+
 export async function POST(request: NextRequest) {
   try {
     if (!process.env.MONGODB_URI) {
       console.error('[Submissions] MONGODB_URI is not configured');
-      return NextResponse.json(
-        { success: false, message: 'Database configuration error' },
-        { status: 500 },
-      );
+      return postJson({ success: false, message: 'Database configuration error' }, 500);
     }
 
     const body = await request.json();
@@ -63,46 +66,29 @@ export async function POST(request: NextRequest) {
     const storyAnswer = typeof body.storyAnswer === 'string' ? body.storyAnswer.trim() : '';
 
     if (!fullName || !email || !dateOfBirth || !country || !heardAboutUs || !storyAnswer) {
-      return NextResponse.json(
-        { success: false, message: 'Missing required fields' },
-        { status: 400 },
-      );
+      return postJson({ success: false, message: 'Missing required fields' }, 400);
     }
 
     if (email.length > 100) {
-      return NextResponse.json(
-        { success: false, message: 'Email is too long (max 100 characters)' },
-        { status: 400 },
-      );
+      return postJson({ success: false, message: 'Email is too long (max 100 characters)' }, 400);
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { success: false, message: 'Invalid email format' },
-        { status: 400 },
-      );
+      return postJson({ success: false, message: 'Invalid email format' }, 400);
     }
 
     if (storyAnswer.length > 2000) {
-      return NextResponse.json(
-        { success: false, message: 'Story answer is too long (max 2000 characters)' },
-        { status: 400 },
-      );
+      return postJson({ success: false, message: 'Story answer is too long (max 2000 characters)' }, 400);
     }
 
     const db = await getDatabase();
     const submissionsCollection = db.collection<Submission>('submissions');
 
-    const alreadySubmitted = await submissionsCollection.findOne({
-      email,
-    });
+    const alreadySubmitted = await submissionsCollection.findOne({ email });
 
     if (alreadySubmitted) {
-      return NextResponse.json(
-        { success: false, message: 'You have already submitted an entry with this email address' },
-        { status: 400 },
-      );
+      return postJson({ success: false, message: 'You have already submitted an entry with this email address' }, 400);
     }
 
     const newSubmission: Submission = {
@@ -119,16 +105,9 @@ export async function POST(request: NextRequest) {
 
     await submissionsCollection.insertOne(newSubmission);
 
-    return NextResponse.json({
-      success: true,
-      message: 'Submission received successfully',
-      submissionId: newSubmission.id,
-    });
+    return postJson({ success: true, message: 'Submission received successfully', submissionId: newSubmission.id });
   } catch (error) {
     console.error('Error processing submission:', error);
-    return NextResponse.json(
-      { success: false, message: 'Internal server error' },
-      { status: 500 },
-    );
+    return postJson({ success: false, message: 'Internal server error' }, 500);
   }
 }
