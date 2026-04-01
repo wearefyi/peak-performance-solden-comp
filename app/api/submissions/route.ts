@@ -1,6 +1,33 @@
 import { getDatabase } from '@/lib/mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 
+export async function GET(request: NextRequest) {
+  const key = request.nextUrl.searchParams.get('key');
+
+  if (!process.env.ADMIN_KEY || key !== process.env.ADMIN_KEY) {
+    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const db = await getDatabase();
+    const submissionsCollection = db.collection('submissions');
+
+    const total = await submissionsCollection.countDocuments();
+    const byCountry = await submissionsCollection
+      .aggregate([{ $group: { _id: '$country', count: { $sum: 1 } } }, { $sort: { count: -1 } }])
+      .toArray();
+
+    return NextResponse.json({
+      success: true,
+      total,
+      byCountry: byCountry.map((c) => ({ country: c._id, count: c.count })),
+    });
+  } catch (error) {
+    console.error('Error fetching submissions stats:', error);
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
+  }
+}
+
 interface Submission {
   id: string;
   fullName: string;
