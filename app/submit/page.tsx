@@ -293,6 +293,7 @@ export default function SubmitPage() {
                     <option value='Norway'>NORWAY</option>
                     <option value='Sweden'>SWEDEN</option>
                     <option value='Switzerland'>SWITZERLAND</option>
+                    <option value='Netherlands'>THE NETHERLANDS</option>
                     <option value='United Kingdom'>UNITED KINGDOM</option>
                   </select>
                   {errors.country && (
