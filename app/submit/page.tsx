@@ -38,7 +38,8 @@ export default function SubmitPage() {
   const [submitError, setSubmitError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
-  const [isPrivacyNoticeModalOpen, setIsPrivacyNoticeModalOpen] = useState(false);
+  const [isPrivacyNoticeModalOpen, setIsPrivacyNoticeModalOpen] =
+    useState(false);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -123,16 +124,21 @@ export default function SubmitPage() {
     } catch (error) {
       setIsSubmitting(false);
       setSubmitError(
-        error instanceof Error ? error.message : 'Failed to submit. Please try again.'
+        error instanceof Error
+          ? error.message
+          : 'Failed to submit. Please try again.'
       );
     }
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
-    const checked = e.target instanceof HTMLInputElement ? e.target.checked : false;
+    const checked =
+      e.target instanceof HTMLInputElement ? e.target.checked : false;
     const type = e.target instanceof HTMLInputElement ? e.target.type : 'text';
     setFormData((prev) => ({
       ...prev,
@@ -162,9 +168,68 @@ export default function SubmitPage() {
         <div className='bg-white/95 backdrop-blur-sm shadow-2xl px-8 md:px-16 py-8 md:py-12 flex flex-col'>
           {!isSubmitted ? (
             <>
-              <SubmissionHeader title='WIN A SPOT AT THE SÖLDEN MOUNTAIN HOUSE'>
+              <SubmissionHeader
+                title='Win a spot at the Peak Performance Mountain House: Sölden
+'
+              >
                 <p className='mb-4'>
-                  Copy tbc — explaining the competition, judging criteria, required experience for participating, timeline, etc.
+                  This May, we&apos;re taking our Mountain House to Solden,
+                  Austria, bringing together a group of trailblazing women for
+                  five days of hiking adventures in the Ötztal valley. And you
+                  can be part of it!
+                </p>
+                <p className='mb-4'>
+                  Now is your chance to win a place in the Mountain House,
+                  including travel, shared accommodation, food, guided
+                  activities, workshops lead by our Peak Performance athletes,
+                  and a few Peak Performance hiking garments.
+                </p>
+                <p className='mb-4'>
+                  To take part, tell us the story of a hiking adventure or
+                  mountain experience where you pushed to find your own path.
+                  How did you handle risk and planning, and what decisions did
+                  you make when things got tough? What made this experience
+                  stand out, and what memories and lessons did you take away
+                  from it?
+                </p>
+                <p className='mb-2'>
+                  Answers will be judged on the following criteria:
+                </p>
+                <p className='mb-1'>
+                  Creativity &amp; authenticity - Fresh ideas, unique
+                  perspective and engaging storytelling.
+                </p>
+                <p className='mb-4'>
+                  Persuasiveness &amp; expression - Ability to justify decisions
+                  and explain motivation with clear reasoning.
+                </p>
+                <p className='mb-4'>
+                  We don&apos;t expect you to be a mountain guide in order to
+                  attend and we will tailor the itinerary based on
+                  everyone&apos;s preferences. However, to make the most of the
+                  trip, you will need to be comfortable taking part in long day
+                  hikes of at least 4 hours, including elevation gain/loss of
+                  600m. Experience in other mountain activities such as via
+                  ferrata, snowshoeing or mountain biking is also a plus.
+                </p>
+                <p className='mb-4'>
+                  Entries will be open from 00:00 on Sunday 5th April 2026 to
+                  23:59 on Sunday April 12th. The winners will be contacted
+                  directly via email by{' '}
+                  <a
+                    href='mailto:collaboration@peakperformance.com'
+                    className='underline hover:no-underline'
+                  >
+                    collaboration@peakperformance.com
+                  </a>
+                  .
+                  Winners will need to be available from 10th May 2026 to 14th
+                  May 2026 inclusive of travel.
+                </p>
+                <p className='mb-4'>
+                  This promotion is only available to residents of the following
+                  countries: United Kingdom, Norway, Sweden, Denmark, Finland,
+                  Belgium, Germany, Austria, Switzerland, the Netherlands.
                 </p>
               </SubmissionHeader>
 
@@ -204,7 +269,9 @@ export default function SubmitPage() {
 
                 {/* Country */}
                 <div className='mb-0 -mx-8 md:-mx-16'>
-                  <label htmlFor='country' className='sr-only'>Country of residence</label>
+                  <label htmlFor='country' className='sr-only'>
+                    Country of residence
+                  </label>
                   <select
                     id='country'
                     name='country'
@@ -215,7 +282,9 @@ export default function SubmitPage() {
                     }`}
                     style={selectStyle}
                   >
-                    <option value='' disabled>COUNTRY OF RESIDENCE</option>
+                    <option value='' disabled>
+                      COUNTRY OF RESIDENCE
+                    </option>
                     <option value='Austria'>AUSTRIA</option>
                     <option value='Belgium'>BELGIUM</option>
                     <option value='Denmark'>DENMARK</option>
@@ -227,7 +296,10 @@ export default function SubmitPage() {
                     <option value='United Kingdom'>UNITED KINGDOM</option>
                   </select>
                   {errors.country && (
-                    <p className='mt-1 text-sm text-red-600 px-8 md:px-16' style={{ fontFamily: 'var(--font-text)' }}>
+                    <p
+                      className='mt-1 text-sm text-red-600 px-8 md:px-16'
+                      style={{ fontFamily: 'var(--font-text)' }}
+                    >
                       {errors.country}
                     </p>
                   )}
@@ -246,7 +318,9 @@ export default function SubmitPage() {
 
                 {/* Where did you hear about us */}
                 <div className='mb-0 -mx-8 md:-mx-16'>
-                  <label htmlFor='heardAboutUs' className='sr-only'>Where did you hear about us?</label>
+                  <label htmlFor='heardAboutUs' className='sr-only'>
+                    Where did you hear about us?
+                  </label>
                   <select
                     id='heardAboutUs'
                     name='heardAboutUs'
@@ -257,12 +331,17 @@ export default function SubmitPage() {
                     }`}
                     style={selectStyle}
                   >
-                    <option value='' disabled>WHERE DID YOU HEAR ABOUT US?</option>
+                    <option value='' disabled>
+                      WHERE DID YOU HEAR ABOUT US?
+                    </option>
                     <option value='Peak Performance'>PEAK PERFORMANCE</option>
                     <option value='Anton Sport'>ANTON SPORT</option>
                   </select>
                   {errors.heardAboutUs && (
-                    <p className='mt-1 text-sm text-red-600 px-8 md:px-16' style={{ fontFamily: 'var(--font-text)' }}>
+                    <p
+                      className='mt-1 text-sm text-red-600 px-8 md:px-16'
+                      style={{ fontFamily: 'var(--font-text)' }}
+                    >
                       {errors.heardAboutUs}
                     </p>
                   )}
@@ -273,9 +352,16 @@ export default function SubmitPage() {
                   <label
                     htmlFor='storyAnswer'
                     className='block px-8 md:px-16 pt-6 pb-3 text-black text-[16px] leading-snug tracking-[-0.05em]'
-                    style={{ fontFamily: 'Mercury Display, serif', fontWeight: 400 }}
+                    style={{
+                      fontFamily: 'Mercury Display, serif',
+                      fontWeight: 400,
+                    }}
                   >
-                    Tell us the story of an adventure or mountain experience where you pushed to find your own path. How did you handle risk and planning, and what decisions did you make when things got tough? What made the experience stand out, and what memories and lessons did you take away from it?
+                    Tell us the story of an adventure or mountain experience
+                    where you pushed to find your own path. How did you handle
+                    risk and planning, and what decisions did you make when
+                    things got tough? What made the experience stand out, and
+                    what memories and lessons did you take away from it?
                   </label>
                   <textarea
                     id='storyAnswer'
@@ -286,18 +372,28 @@ export default function SubmitPage() {
                     maxLength={STORY_MAX_CHARS}
                     placeholder='YOUR ANSWER'
                     className='w-full py-4 px-8 md:px-16 border-0 border-b border-gray-300 focus:outline-none focus:border-b-2 focus:border-black transition-all placeholder:uppercase placeholder:text-[#868686] bg-transparent text-[16px] leading-[1.5] tracking-[-0.02em] text-black resize-none normal-case'
-                    style={{ fontFamily: 'Helvetica Now Var, sans-serif', fontWeight: 400 }}
+                    style={{
+                      fontFamily: 'Helvetica Now Var, sans-serif',
+                      fontWeight: 400,
+                    }}
                   />
                   <div className='flex justify-between items-center px-8 md:px-16 pt-1 pb-2'>
                     {errors.storyAnswer ? (
-                      <p className='text-sm text-red-600' style={{ fontFamily: 'var(--font-text)' }}>
+                      <p
+                        className='text-sm text-red-600'
+                        style={{ fontFamily: 'var(--font-text)' }}
+                      >
                         {errors.storyAnswer}
                       </p>
                     ) : (
                       <span />
                     )}
                     <p
-                      className={`text-sm ml-auto ${storyCharsRemaining < 0 ? 'text-red-600' : 'text-gray-400'}`}
+                      className={`text-sm ml-auto ${
+                        storyCharsRemaining < 0
+                          ? 'text-red-600'
+                          : 'text-gray-400'
+                      }`}
                       style={{ fontFamily: 'var(--font-text)' }}
                     >
                       {formData.storyAnswer.length} / {STORY_MAX_CHARS}
@@ -317,12 +413,19 @@ export default function SubmitPage() {
                         onChange={handleChange}
                         className='w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-black accent-black cursor-pointer shrink-0 mt-0.5'
                       />
-                      <label htmlFor='ageConfirmed' className='text-xs text-black cursor-pointer leading-tight' style={{ fontFamily: 'var(--font-text)' }}>
+                      <label
+                        htmlFor='ageConfirmed'
+                        className='text-xs text-black cursor-pointer leading-tight'
+                        style={{ fontFamily: 'var(--font-text)' }}
+                      >
                         I confirm that I am 18 or older
                       </label>
                     </div>
                     {errors.ageConfirmed && (
-                      <p className='mt-1 text-sm text-red-600 ml-8' style={{ fontFamily: 'var(--font-text)' }}>
+                      <p
+                        className='mt-1 text-sm text-red-600 ml-8'
+                        style={{ fontFamily: 'var(--font-text)' }}
+                      >
                         {errors.ageConfirmed}
                       </p>
                     )}
@@ -338,17 +441,31 @@ export default function SubmitPage() {
                         onChange={handleChange}
                         className='w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-black accent-black cursor-pointer shrink-0 mt-0.5'
                       />
-                      <div className='text-xs text-black leading-tight' style={{ fontFamily: 'var(--font-text)' }}>
-                        <label htmlFor='agreedToTerms' className='cursor-pointer'>
-                          I agree to the Peak Performance Sölden Mountain House 2026 Promotion{' '}
+                      <div
+                        className='text-xs text-black leading-tight'
+                        style={{ fontFamily: 'var(--font-text)' }}
+                      >
+                        <label
+                          htmlFor='agreedToTerms'
+                          className='cursor-pointer'
+                        >
+                          I agree to the Peak Performance Sölden Mountain House
+                          2026 Promotion{' '}
                         </label>
-                        <button type='button' onClick={() => setIsTermsModalOpen(true)} className='text-black underline hover:no-underline'>
+                        <button
+                          type='button'
+                          onClick={() => setIsTermsModalOpen(true)}
+                          className='text-black underline hover:no-underline'
+                        >
                           Terms and Conditions
                         </button>
                       </div>
                     </div>
                     {errors.agreedToTerms && (
-                      <p className='mt-1 text-sm text-red-600 ml-8' style={{ fontFamily: 'var(--font-text)' }}>
+                      <p
+                        className='mt-1 text-sm text-red-600 ml-8'
+                        style={{ fontFamily: 'var(--font-text)' }}
+                      >
                         {errors.agreedToTerms}
                       </p>
                     )}
@@ -364,21 +481,40 @@ export default function SubmitPage() {
                         onChange={handleChange}
                         className='w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-black accent-black cursor-pointer shrink-0 mt-0.5'
                       />
-                      <div className='text-xs text-black leading-tight' style={{ fontFamily: 'var(--font-text)' }}>
-                        <label htmlFor='privacyAccepted' className='cursor-pointer'>
-                          I agree the processing of my personal information according to the{' '}
+                      <div
+                        className='text-xs text-black leading-tight'
+                        style={{ fontFamily: 'var(--font-text)' }}
+                      >
+                        <label
+                          htmlFor='privacyAccepted'
+                          className='cursor-pointer'
+                        >
+                          I agree the processing of my personal information
+                          according to the{' '}
                         </label>
-                        <a href='https://www.peakperformance.com/se/en/privacy-policy' target='_blank' rel='noopener noreferrer' className='text-black underline hover:no-underline'>
+                        <a
+                          href='https://www.peakperformance.com/se/en/privacy-policy'
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='text-black underline hover:no-underline'
+                        >
                           Privacy Policy
-                        </a>
-                        {' '}and{' '}
-                        <button type='button' onClick={() => setIsPrivacyNoticeModalOpen(true)} className='text-black underline hover:no-underline'>
+                        </a>{' '}
+                        and{' '}
+                        <button
+                          type='button'
+                          onClick={() => setIsPrivacyNoticeModalOpen(true)}
+                          className='text-black underline hover:no-underline'
+                        >
                           Privacy Notice
                         </button>
                       </div>
                     </div>
                     {errors.privacyAccepted && (
-                      <p className='mt-1 text-sm text-red-600 ml-8' style={{ fontFamily: 'var(--font-text)' }}>
+                      <p
+                        className='mt-1 text-sm text-red-600 ml-8'
+                        style={{ fontFamily: 'var(--font-text)' }}
+                      >
                         {errors.privacyAccepted}
                       </p>
                     )}
@@ -387,7 +523,10 @@ export default function SubmitPage() {
 
                 {submitError && (
                   <div className='p-4 bg-red-50 border border-red-200 rounded-lg'>
-                    <p className='text-sm text-red-900' style={{ fontFamily: 'var(--font-text)' }}>
+                    <p
+                      className='text-sm text-red-900'
+                      style={{ fontFamily: 'var(--font-text)' }}
+                    >
                       {submitError}
                     </p>
                   </div>
