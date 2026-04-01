@@ -7,7 +7,7 @@ interface StatsData {
   byCountry: { country: string; count: number }[];
 }
 
-const SESSION_KEY = 'solden_stats_auth';
+const SESSION_KEY = 'solden_stats_token';
 
 export default function SoldenStatsPage() {
   const [password, setPassword] = useState('');
@@ -17,42 +17,59 @@ export default function SoldenStatsPage() {
   const [authed, setAuthed] = useState(false);
 
   useEffect(() => {
-    const saved = sessionStorage.getItem(SESSION_KEY);
-    if (saved) {
-      fetchStats(saved, true);
+    const savedToken = sessionStorage.getItem(SESSION_KEY);
+    if (savedToken) {
+      fetchWithToken(savedToken);
     }
   }, []);
 
-  const fetchStats = async (pw: string, silent = false) => {
-    if (!silent) setLoading(true);
-    setError('');
-
+  const postToApi = async (body: object) => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 10000);
-
     try {
       const res = await fetch('/api/stats', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pw }),
+        body: JSON.stringify(body),
         signal: controller.signal,
       });
-
       clearTimeout(timeout);
-
       const text = await res.text();
-      const json = JSON.parse(text);
+      return JSON.parse(text);
+    } catch (err) {
+      clearTimeout(timeout);
+      throw err;
+    }
+  };
 
+  const fetchWithToken = async (token: string) => {
+    try {
+      const json = await postToApi({ token });
       if (!json.success) {
-        setError('Incorrect password.');
         sessionStorage.removeItem(SESSION_KEY);
       } else {
-        sessionStorage.setItem(SESSION_KEY, pw);
+        setData(json);
+        setAuthed(true);
+      }
+    } catch {
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const json = await postToApi({ password });
+      if (!json.success) {
+        setError('Incorrect password.');
+      } else {
+        sessionStorage.setItem(SESSION_KEY, json.token);
         setData(json);
         setAuthed(true);
       }
     } catch (err) {
-      clearTimeout(timeout);
       if (err instanceof Error && err.name === 'AbortError') {
         setError('Request timed out. Please try again.');
       } else {
@@ -61,11 +78,6 @@ export default function SoldenStatsPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchStats(password);
   };
 
   return (

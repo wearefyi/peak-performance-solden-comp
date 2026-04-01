@@ -4,8 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   const key = request.nextUrl.searchParams.get('key');
 
+  const noStore = { headers: { 'Cache-Control': 'no-store' } };
+
   if (!process.env.ADMIN_KEY || key !== process.env.ADMIN_KEY) {
-    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401, ...noStore });
   }
 
   try {
@@ -21,10 +23,10 @@ export async function GET(request: NextRequest) {
       success: true,
       total,
       byCountry: byCountry.map((c) => ({ country: c._id, count: c.count })),
-    });
+    }, noStore);
   } catch (error) {
     console.error('Error fetching submissions stats:', error);
-    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500, ...noStore });
   }
 }
 
