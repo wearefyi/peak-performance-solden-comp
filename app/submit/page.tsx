@@ -173,7 +173,7 @@ export default function SubmitPage() {
 '
               >
                 <p className='mb-4'>
-                  This May, we&apos;re taking our Mountain House to Solden,
+                  This May, we&apos;re taking our Mountain House to Sölden,
                   Austria, bringing together a group of trailblazing women for
                   five days of hiking adventures in the Ötztal valley. And you
                   can be part of it!
@@ -181,7 +181,7 @@ export default function SubmitPage() {
                 <p className='mb-4'>
                   Now is your chance to win a place in the Mountain House,
                   including travel, shared accommodation, food, guided
-                  activities, workshops lead by our Peak Performance athletes,
+                  activities, workshops led by our Peak Performance athletes,
                   and a few Peak Performance hiking garments.
                 </p>
                 <p className='mb-4'>
@@ -214,7 +214,7 @@ export default function SubmitPage() {
                 </p>
                 <p className='mb-4'>
                   Entries will be open from 00:00 on Sunday 5th April 2026 to
-                  23:59 on Sunday April 12th. The winners will be contacted
+                  23:59 on Sunday 12th April 2026. The winners will be contacted
                   directly via email by{' '}
                   <a
                     href='mailto:collaboration@peakperformance.com'
