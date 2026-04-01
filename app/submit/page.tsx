@@ -270,6 +270,9 @@ export default function SubmitPage() {
                       <button
                         type='button'
                         onClick={() => toggleAccordion(key)}
+                        aria-expanded={openAccordion === key}
+                        aria-controls={`accordion-panel-${key}`}
+                        id={`accordion-trigger-${key}`}
                         className='w-full flex items-center justify-between py-3 text-left bg-transparent'
                       >
                         <span
@@ -287,6 +290,7 @@ export default function SubmitPage() {
                           stroke='currentColor'
                           strokeWidth='2'
                           viewBox='0 0 24 24'
+                          aria-hidden='true'
                         >
                           <path
                             strokeLinecap='round'
@@ -296,14 +300,21 @@ export default function SubmitPage() {
                         </svg>
                       </button>
                       <div
-                        className='overflow-hidden transition-all duration-300 ease-in-out'
-                        style={{ maxHeight: openAccordion === key ? '400px' : '0px' }}
+                        id={`accordion-panel-${key}`}
+                        role='region'
+                        aria-labelledby={`accordion-trigger-${key}`}
+                        className='grid transition-all duration-300 ease-in-out'
+                        style={{ gridTemplateRows: openAccordion === key ? '1fr' : '0fr' }}
                       >
                         <div
-                          className='pb-3 text-sm text-black leading-relaxed'
-                          style={{ fontFamily: 'var(--font-text)' }}
+                          className='overflow-hidden'
                         >
-                          {content}
+                          <div
+                            className='pb-3 text-sm text-black leading-relaxed'
+                            style={{ fontFamily: 'var(--font-text)' }}
+                          >
+                            {content}
+                          </div>
                         </div>
                       </div>
                     </div>
