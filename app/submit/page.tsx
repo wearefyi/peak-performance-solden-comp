@@ -40,6 +40,10 @@ export default function SubmitPage() {
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [isPrivacyNoticeModalOpen, setIsPrivacyNoticeModalOpen] =
     useState(false);
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
+  const toggleAccordion = (key: string) =>
+    setOpenAccordion((prev) => (prev === key ? null : key));
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -152,16 +156,18 @@ export default function SubmitPage() {
   const storyCharsRemaining = STORY_MAX_CHARS - formData.storyAnswer.length;
 
   return (
-    <div className='min-h-screen relative flex items-center justify-center p-4 overflow-hidden'>
-      {/* Background image */}
-      <Image
-        src='/background.jpeg'
-        alt=''
-        fill
-        className='object-cover'
-        priority
-      />
-      <div className='absolute inset-0 bg-black/30' />
+    <div className='min-h-screen flex items-center justify-center p-4'>
+      {/* Background image — fixed so it never resizes with content */}
+      <div className='fixed inset-0 -z-10'>
+        <Image
+          src='/background.jpeg'
+          alt=''
+          fill
+          className='object-cover'
+          priority
+        />
+        <div className='absolute inset-0 bg-black/30' />
+      </div>
 
       {/* Form card */}
       <div className='relative z-10 w-full max-w-2xl'>
@@ -178,12 +184,132 @@ export default function SubmitPage() {
                   five days of hiking adventures in the Ötztal valley. And you
                   can be part of it!
                 </p>
-                <p className='mb-4'>
-                  Now is your chance to win a place in the Mountain House,
-                  including travel, shared accommodation, food, guided
-                  activities, workshops led by our Peak Performance athletes,
-                  and a few Peak Performance hiking garments.
-                </p>
+
+                {/* Accordion */}
+                <div className='mb-4 border-t border-gray-200'>
+                  {[
+                    {
+                      key: 'prize',
+                      label: "What's included",
+                      content: (
+                        <p>
+                          Now is your chance to win a place in the Mountain
+                          House, including travel, shared accommodation, food,
+                          guided activities, workshops led by our Peak
+                          Performance athletes, and a few Peak Performance
+                          hiking garments.
+                        </p>
+                      ),
+                    },
+                    {
+                      key: 'judging',
+                      label: 'Judging criteria',
+                      content: (
+                        <>
+                          <p className='mb-2'>
+                            Answers will be judged on the following criteria:
+                          </p>
+                          <p className='mb-1'>
+                            Creativity &amp; authenticity - Fresh ideas, unique
+                            perspective and engaging storytelling.
+                          </p>
+                          <p>
+                            Persuasiveness &amp; expression - Ability to
+                            justify decisions and explain motivation with clear
+                            reasoning.
+                          </p>
+                        </>
+                      ),
+                    },
+                    {
+                      key: 'fitness',
+                      label: 'Hiking experience',
+                      content: (
+                        <p>
+                          We don&apos;t expect you to be a mountain guide in
+                          order to attend and we will tailor the itinerary
+                          based on everyone&apos;s preferences. However, to
+                          make the most of the trip, you will need to be
+                          comfortable taking part in long day hikes of at least
+                          4 hours, including elevation gain/loss of 600m.
+                          Experience in other mountain activities such as via
+                          ferrata, snowshoeing or mountain biking is also a
+                          plus.
+                        </p>
+                      ),
+                    },
+                    {
+                      key: 'eligibility',
+                      label: 'Dates & eligibility',
+                      content: (
+                        <>
+                          <p className='mb-2'>
+                            Entries will be open from 00:00 on Sunday 5th April
+                            2026 to 23:59 on Sunday 12th April 2026. The
+                            winners will be contacted directly via email by{' '}
+                            <a
+                              href='mailto:collaboration@peakperformance.com'
+                              className='underline hover:no-underline'
+                            >
+                              collaboration@peakperformance.com
+                            </a>
+                            . Winners will need to be available from 10th May
+                            2026 to 14th May 2026 inclusive of travel.
+                          </p>
+                          <p>
+                            This promotion is only available to residents of
+                            the following countries: United Kingdom, Norway,
+                            Sweden, Denmark, Finland, Belgium, Germany, Austria,
+                            Switzerland, the Netherlands.
+                          </p>
+                        </>
+                      ),
+                    },
+                  ].map(({ key, label, content }) => (
+                    <div key={key} className='border-b border-gray-200'>
+                      <button
+                        type='button'
+                        onClick={() => toggleAccordion(key)}
+                        className='w-full flex items-center justify-between py-3 text-left bg-transparent'
+                      >
+                        <span
+                          className='text-sm uppercase tracking-[-0.02em] text-black'
+                          style={{
+                            fontFamily: 'Helvetica Now Var, sans-serif',
+                            fontWeight: 400,
+                          }}
+                        >
+                          {label}
+                        </span>
+                        <svg
+                          className={`w-4 h-4 shrink-0 transition-transform duration-200 ${openAccordion === key ? 'rotate-180' : ''}`}
+                          fill='none'
+                          stroke='currentColor'
+                          strokeWidth='2'
+                          viewBox='0 0 24 24'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M19 9l-7 7-7-7'
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        className='overflow-hidden transition-all duration-300 ease-in-out'
+                        style={{ maxHeight: openAccordion === key ? '400px' : '0px' }}
+                      >
+                        <div
+                          className='pb-3 text-sm text-black leading-relaxed'
+                          style={{ fontFamily: 'var(--font-text)' }}
+                        >
+                          {content}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
                 <p className='mb-4'>
                   To take part, tell us the story of a hiking adventure or
                   mountain experience where you pushed to find your own path.
@@ -191,45 +317,6 @@ export default function SubmitPage() {
                   you make when things got tough? What made this experience
                   stand out, and what memories and lessons did you take away
                   from it?
-                </p>
-                <p className='mb-2'>
-                  Answers will be judged on the following criteria:
-                </p>
-                <p className='mb-1'>
-                  Creativity &amp; authenticity - Fresh ideas, unique
-                  perspective and engaging storytelling.
-                </p>
-                <p className='mb-4'>
-                  Persuasiveness &amp; expression - Ability to justify decisions
-                  and explain motivation with clear reasoning.
-                </p>
-                <p className='mb-4'>
-                  We don&apos;t expect you to be a mountain guide in order to
-                  attend and we will tailor the itinerary based on
-                  everyone&apos;s preferences. However, to make the most of the
-                  trip, you will need to be comfortable taking part in long day
-                  hikes of at least 4 hours, including elevation gain/loss of
-                  600m. Experience in other mountain activities such as via
-                  ferrata, snowshoeing or mountain biking is also a plus.
-                </p>
-                <p className='mb-4'>
-                  Entries will be open from 00:00 on Sunday 5th April 2026 to
-                  23:59 on Sunday 12th April 2026. The winners will be contacted
-                  directly via email by{' '}
-                  <a
-                    href='mailto:collaboration@peakperformance.com'
-                    className='underline hover:no-underline'
-                  >
-                    collaboration@peakperformance.com
-                  </a>
-                  .
-                  Winners will need to be available from 10th May 2026 to 14th
-                  May 2026 inclusive of travel.
-                </p>
-                <p className='mb-4'>
-                  This promotion is only available to residents of the following
-                  countries: United Kingdom, Norway, Sweden, Denmark, Finland,
-                  Belgium, Germany, Austria, Switzerland, the Netherlands.
                 </p>
               </SubmissionHeader>
 
@@ -313,7 +400,7 @@ export default function SubmitPage() {
                   name='socialHandle'
                   value={formData.socialHandle}
                   onChange={handleChange}
-                  placeholder='INSTAGRAM / TIKTOK HANDLE (OPTIONAL)'
+                  placeholder='INSTAGRAM / TIKTOK HANDLE'
                   error={errors.socialHandle}
                 />
 
@@ -333,7 +420,7 @@ export default function SubmitPage() {
                     style={selectStyle}
                   >
                     <option value='' disabled>
-                      WHERE DID YOU HEAR ABOUT US?
+                      WHERE DID YOU HEAR ABOUT THE COMPETITION?
                     </option>
                     <option value='Peak Performance'>PEAK PERFORMANCE</option>
                     <option value='Anton Sport'>ANTON SPORT</option>
