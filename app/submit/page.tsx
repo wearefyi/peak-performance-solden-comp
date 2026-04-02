@@ -210,7 +210,9 @@ export default function SubmitPage() {
                           House, including travel, shared accommodation, food,
                           guided activities, workshops led by our Peak
                           Performance athletes, and a few Peak Performance
-                          hiking garments.
+                          hiking garments. This experience is specifically
+                          designed for women to connect around summer adventures
+                          in the mountains.
                         </p>
                       ),
                     },
@@ -223,13 +225,16 @@ export default function SubmitPage() {
                             The stories will be judged on the following criteria:
                           </p>
                           <p className='mb-1'>
-                            Creativity &amp; authenticity - Fresh ideas, unique
-                            perspective and engaging storytelling.
+                            Creativity &amp; originality - Uniqueness of ideas,
+                            engaging storytelling and a fresh perspective
+                          </p>
+                          <p className='mb-1'>
+                            Persuasiveness &amp; strength of argument - Ability
+                            to justify decisions and motivation
                           </p>
                           <p>
-                            Persuasiveness &amp; expression - Ability to
-                            justify decisions and explain motivation with clear
-                            reasoning.
+                            Authenticity &amp; personal touch - Genuine
+                            expression and personal insight
                           </p>
                         </>
                       ),
