@@ -26,7 +26,7 @@ export default function SubmissionSuccess() {
               letterSpacing: '-0.05em',
             }}
           >
-            THANK YOU FOR ENTERING!
+            THANK YOU FOR ENTERING
           </p>
           <p
             className='text-black'
@@ -38,7 +38,7 @@ export default function SubmissionSuccess() {
               letterSpacing: '-0.05em',
             }}
           >
-            We will be in touch in due course if your entry is successful.
+            We will be in touch after 12th April 2026 if you have won a place at the Mountain House: Sölden.
           </p>
         </div>
       </div>

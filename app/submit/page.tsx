@@ -316,8 +316,13 @@ export default function SubmitPage() {
                           className='overflow-hidden'
                         >
                           <div
-                            className='pb-3 text-sm text-black leading-relaxed'
-                            style={{ fontFamily: 'var(--font-text)' }}
+                            className='pb-3 text-black'
+                            style={{
+                              fontFamily: 'Mercury Display, serif',
+                              fontWeight: 400,
+                              fontSize: '16px',
+                              letterSpacing: '-0.05em',
+                            }}
                           >
                             {content}
                           </div>
