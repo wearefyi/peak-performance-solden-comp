@@ -1,4 +1,5 @@
 import { getDatabase } from '@/lib/mongodb';
+import { logError, logInfo } from '@/lib/logger';
 import { NextRequest } from 'next/server';
 
 
@@ -23,7 +24,7 @@ const postJson = (data: unknown, status = 200) =>
 export async function POST(request: NextRequest) {
   try {
     if (!process.env.MONGODB_URI) {
-      console.error('[Submissions] MONGODB_URI is not configured');
+      await logError('[Submissions] MONGODB_URI is not configured');
       return postJson({ success: false, message: 'Database configuration error' }, 500);
     }
 
@@ -77,9 +78,12 @@ export async function POST(request: NextRequest) {
 
     await submissionsCollection.insertOne(newSubmission);
 
+    await logInfo('[Submissions] New submission received', { email, country });
     return postJson({ success: true, message: 'Submission received successfully', submissionId: newSubmission.id });
   } catch (error) {
-    console.error('Error processing submission:', error);
+    await logError('[Submissions] Failed to process submission', {
+      error: error instanceof Error ? error.message : String(error),
+    });
     return postJson({ success: false, message: 'Internal server error' }, 500);
   }
 }
