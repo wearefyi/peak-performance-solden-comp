@@ -213,7 +213,7 @@ export default function SubmitPage() {
                       content: (
                         <>
                           <p className='mb-2'>
-                            Answers will be judged on the following criteria:
+                            The stories will be judged on the following criteria:
                           </p>
                           <p className='mb-1'>
                             Creativity &amp; authenticity - Fresh ideas, unique
