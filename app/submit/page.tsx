@@ -60,6 +60,13 @@ export default function SubmitPage() {
 
     if (!formData.dateOfBirth) {
       newErrors.dateOfBirth = 'Date of birth is required';
+    } else {
+      const dob = new Date(formData.dateOfBirth);
+      const eighteenYearsAgo = new Date();
+      eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
+      if (dob > eighteenYearsAgo) {
+        newErrors.dateOfBirth = 'You must be 18 or older to enter';
+      }
     }
 
     if (!formData.country) {
