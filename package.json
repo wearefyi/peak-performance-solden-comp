@@ -10,6 +10,7 @@
     "export": "node scripts/export-submissions.mjs"
   },
   "dependencies": {
+    "@logtail/node": "^0.5.8",
     "mongodb": "^7.0.0",
     "next": "^16.0.7",
     "react": "19.2.0",

@@ -1,4 +1,5 @@
 import { getDatabase } from '@/lib/mongodb';
+import { logError } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -67,7 +68,8 @@ export async function POST(request: NextRequest) {
     try {
       const stats = await getStats();
       return json({ success: true, ...stats });
-    } catch {
+    } catch (error) {
+      await logError('[Stats] Failed to fetch stats (token auth)', { error: error instanceof Error ? error.message : String(error) });
       return json({ success: false, message: 'Internal server error' }, 500);
     }
   }
@@ -81,7 +83,8 @@ export async function POST(request: NextRequest) {
     const stats = await getStats();
     const token = issueToken();
     return json({ success: true, token, ...stats });
-  } catch {
+  } catch (error) {
+    await logError('[Stats] Failed to fetch stats (password auth)', { error: error instanceof Error ? error.message : String(error) });
     return json({ success: false, message: 'Internal server error' }, 500);
   }
 }
