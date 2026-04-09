@@ -11,10 +11,10 @@ import {
 import Image from 'next/image';
 import { useState } from 'react';
 
-// Competition window (ISO 8601 UTC). Midnight UK time (BST = UTC+1) on April 12 = 23:00 UTC.
-// Override via Netlify env vars without a code change:
-//   NEXT_PUBLIC_COMPETITION_OPEN_FROM   — when entries open
-//   NEXT_PUBLIC_COMPETITION_OPEN_UNTIL  — when entries close
+// Competition window (ISO 8601 UTC). e.g. 23:59 BST = 22:59 UTC.
+// Override via Netlify env vars — requires a redeploy to take effect (NEXT_PUBLIC_* values are inlined at build time):
+//   NEXT_PUBLIC_COMPETITION_OPEN_FROM    — when entries open
+//   NEXT_PUBLIC_COMPETITION_OPEN_UNTIL   — when entries close (set to 2026-04-12T22:59:00Z for 23:59 BST)
 //   NEXT_PUBLIC_COMPETITION_FORCE_CLOSED — set to "true" to show the closed screen immediately (useful for previewing)
 const COMPETITION_OPEN_FROM = new Date(
   process.env.NEXT_PUBLIC_COMPETITION_OPEN_FROM ?? '2026-04-05T00:00:00Z'
@@ -206,9 +206,11 @@ export default function SubmitPage() {
       {/* Form card */}
       <div className='relative z-10 w-full max-w-2xl'>
         <div className='bg-white/95 backdrop-blur-sm shadow-2xl px-8 md:px-16 py-8 md:py-12 flex flex-col'>
-          {!competitionOpen ? (
+          {isSubmitted ? (
+            <SubmissionSuccess />
+          ) : !competitionOpen ? (
             <CompetitionClosed />
-          ) : !isSubmitted ? (
+          ) : (
             <>
               <SubmissionHeader
                 title='Win a spot at the Peak Performance Mountain House: Sölden
@@ -680,8 +682,6 @@ export default function SubmitPage() {
                 <SubmitButton isSubmitting={isSubmitting} />
               </form>
             </>
-          ) : (
-            <SubmissionSuccess />
           )}
         </div>
       </div>
