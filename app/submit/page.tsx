@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  CompetitionClosed,
   FormInput,
   LanguageModal,
   SubmissionHeader,
@@ -9,6 +10,24 @@ import {
 } from '@/components/submission';
 import Image from 'next/image';
 import { useState } from 'react';
+
+// Competition window (ISO 8601 UTC). e.g. 23:59 BST = 22:59 UTC.
+// Override via Netlify env vars — requires a redeploy to take effect (NEXT_PUBLIC_* values are inlined at build time):
+//   NEXT_PUBLIC_COMPETITION_OPEN_FROM    — when entries open
+//   NEXT_PUBLIC_COMPETITION_OPEN_UNTIL   — when entries close (set to 2026-04-12T22:59:00Z for 23:59 BST)
+//   NEXT_PUBLIC_COMPETITION_FORCE_CLOSED — set to "true" to show the closed screen immediately (useful for previewing)
+const COMPETITION_OPEN_FROM = new Date(
+  process.env.NEXT_PUBLIC_COMPETITION_OPEN_FROM ?? '2026-04-05T00:00:00Z'
+);
+const COMPETITION_OPEN_UNTIL = new Date(
+  process.env.NEXT_PUBLIC_COMPETITION_OPEN_UNTIL ?? '2026-04-12T23:00:00Z'
+);
+
+function isCompetitionOpen(): boolean {
+  if (process.env.NEXT_PUBLIC_COMPETITION_FORCE_CLOSED === 'true') return false;
+  const now = new Date();
+  return now >= COMPETITION_OPEN_FROM && now <= COMPETITION_OPEN_UNTIL;
+}
 
 const STORY_MAX_CHARS = 2000;
 
@@ -168,6 +187,8 @@ export default function SubmitPage() {
 
   const storyCharsRemaining = STORY_MAX_CHARS - formData.storyAnswer.length;
 
+  const competitionOpen = isCompetitionOpen();
+
   return (
     <div className='min-h-screen flex items-center justify-center p-4'>
       {/* Background image — fixed so it never resizes with content */}
@@ -185,7 +206,11 @@ export default function SubmitPage() {
       {/* Form card */}
       <div className='relative z-10 w-full max-w-2xl'>
         <div className='bg-white/95 backdrop-blur-sm shadow-2xl px-8 md:px-16 py-8 md:py-12 flex flex-col'>
-          {!isSubmitted ? (
+          {isSubmitted ? (
+            <SubmissionSuccess />
+          ) : !competitionOpen ? (
+            <CompetitionClosed />
+          ) : (
             <>
               <SubmissionHeader
                 title='Win a spot at the Peak Performance Mountain House: Sölden
@@ -657,8 +682,6 @@ export default function SubmitPage() {
                 <SubmitButton isSubmitting={isSubmitting} />
               </form>
             </>
-          ) : (
-            <SubmissionSuccess />
           )}
         </div>
       </div>
