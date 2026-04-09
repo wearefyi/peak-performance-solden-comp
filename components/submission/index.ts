@@ -1,3 +1,4 @@
+export { default as CompetitionClosed } from './CompetitionClosed';
 export { default as FormInput } from './FormInput';
 export { default as LanguageModal } from './LanguageModal';
 export { default as SubmissionHeader } from './SubmissionHeader';

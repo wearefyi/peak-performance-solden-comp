@@ -2,6 +2,12 @@ import { getDatabase } from '@/lib/mongodb';
 import { logError, logInfo } from '@/lib/logger';
 import { NextRequest } from 'next/server';
 
+const COMPETITION_OPEN_FROM = new Date(
+  process.env.NEXT_PUBLIC_COMPETITION_OPEN_FROM ?? '2026-04-05T00:00:00Z'
+);
+const COMPETITION_OPEN_UNTIL = new Date(
+  process.env.NEXT_PUBLIC_COMPETITION_OPEN_UNTIL ?? '2026-04-12T23:00:00Z'
+);
 
 interface Submission {
   id: string;
@@ -23,6 +29,12 @@ const postJson = (data: unknown, status = 200) =>
 
 export async function POST(request: NextRequest) {
   try {
+    const now = new Date();
+    const forceClosed = process.env.NEXT_PUBLIC_COMPETITION_FORCE_CLOSED === 'true';
+    if (forceClosed || now < COMPETITION_OPEN_FROM || now > COMPETITION_OPEN_UNTIL) {
+      return postJson({ success: false, message: 'This competition is now closed' }, 403);
+    }
+
     if (!process.env.MONGODB_URI) {
       await logError('[Submissions] MONGODB_URI is not configured');
       return postJson({ success: false, message: 'Database configuration error' }, 500);
