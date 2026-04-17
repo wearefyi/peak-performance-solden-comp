@@ -1,6 +1,17 @@
 import Image from 'next/image';
 
+// Show winners copy until this date, then revert to the standard closed message.
+// Override via Netlify env var (requires redeploy): NEXT_PUBLIC_WINNER_ANNOUNCEMENT_UNTIL
+const WINNER_ANNOUNCEMENT_UNTIL = new Date(
+  process.env.NEXT_PUBLIC_WINNER_ANNOUNCEMENT_UNTIL ?? '2026-04-22T00:00:00Z'
+);
+
+function isWinnerAnnouncementActive(): boolean {
+  return new Date() < WINNER_ANNOUNCEMENT_UNTIL;
+}
+
 export default function CompetitionClosed() {
+  const showWinners = isWinnerAnnouncementActive();
   return (
     <>
       <div className='mb-6 pb-6 border-b border-gray-300 pt-0 -mx-8 md:-mx-16 px-8 md:px-16'>
@@ -38,16 +49,33 @@ export default function CompetitionClosed() {
               letterSpacing: '-0.05em',
             }}
           >
-            Entries for the Peak Performance Mountain House: Sölden competition
-            have now closed. If you entered, winners will be contacted directly
-            via{' '}
-            <a
-              href='mailto:collaboration@peakperformance.com'
-              className='underline hover:no-underline'
-            >
-              collaboration@peakperformance.com
-            </a>
-            .
+            {showWinners ? (
+              <>
+                Entries for the Peak Performance Mountain House: Sölden
+                competition have now closed. Congratulations to the winners,
+                Stina S and Nina K — you have been contacted directly via{' '}
+                <a
+                  href='mailto:collaboration@peakperformance.com'
+                  className='underline hover:no-underline'
+                >
+                  collaboration@peakperformance.com
+                </a>
+                .
+              </>
+            ) : (
+              <>
+                Entries for the Peak Performance Mountain House: Sölden
+                competition have now closed. If you entered, winners will be
+                contacted directly via{' '}
+                <a
+                  href='mailto:collaboration@peakperformance.com'
+                  className='underline hover:no-underline'
+                >
+                  collaboration@peakperformance.com
+                </a>
+                .
+              </>
+            )}
           </p>
         </div>
       </div>
